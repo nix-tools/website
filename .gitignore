@@ -1,0 +1,5 @@
+# Hugo output
+public/
+
+# Misc.
+.direnv/

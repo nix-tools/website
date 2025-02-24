@@ -1,0 +1,3 @@
+baseURL = 'https://nix.tools/'
+languageCode = 'en-us'
+title = 'Nix Tools'
