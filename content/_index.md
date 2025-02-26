@@ -6,13 +6,13 @@ draft = false
 
 ## Welcome
 
-nix.tools is a Nix documentation site and contains guides for beginners and intermediate users on how to enhance their Nix experience. Browse this site for interesting learning material and references elsewhere.
+nix.tools is an unofficial Nix documentation site and contains guides for beginners and intermediate users on how to enhance their Nix experience. Browse this site for interesting learning material and references elsewhere. [Read more »](/about)
 
 Learning Nix requires doing research. Some of the resources you will find when searching the web. Others are in the category "I wish I knew 6 months ago!" These are listed here:
 
 ### Getting started?
 
-For your day-to-day drive-by learning,
+For your day-to-day learning,
 
 - [Nix in 100 seconds][nix-100s]: The answer to "But why?" from your friends and colleagues.
 - [nix.dev][nix.dev]: The official documentation site for Nix is the best place to start reading. It teaches basics and advanced subjects.
@@ -24,7 +24,7 @@ For your day-to-day drive-by learning,
 
 For your studies,
 
-- [Wombat's Book of Nix][wombat-book]: Extensive, very educational
+- [Wombat's Book of Nix][wombat-book]: Extensive, educational
 - [Nix Pills][nix-pills]: Teaches a lot of important basics: derivations, garbage collection, the store, nixpkgs design patterns
 - [NixOS and Flakes][nixos-and-flakes]: A flakes-first starter tutorial
 - [Flake Parts][flake-parts]: Well-documented, opinionated flake framework provides insight into what flakes really are

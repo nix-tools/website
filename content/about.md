@@ -21,7 +21,7 @@ The motivation behind [nix.tools][nix.tools] was to keep the spirit of the wikis
 
 ## Copyleft (CC0)
 
-When you publish an article on [nix.tools][nix.tools], you agree to release it under the [CC0 (Creative Commons Zero)][cc0] license. This means your content enters the public domain and can be freely used, modified, and distributed by anyone without the need for attribution. [Read more](/copyleft)
+When you publish an article on [nix.tools][nix.tools], you agree to release it under the [CC0 (Creative Commons Zero)][cc0] license. This means your content enters the public domain and can be freely used, modified, and distributed by anyone without the need for attribution. [Read more »](/copyleft)
 
 Articles on [nix.tools][nix.tools] are licensed under [CC0][cc0] in the interest of maximizing the potential for learning Nix. This includes feeding content to AI, and allowing individuals or organisations to charge money for teaching based on this content. We believe that unrestricted access to learning material is the best course of action for a greater adoption of Nix.
 
