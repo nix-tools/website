@@ -264,7 +264,7 @@ deploy SERVER='nix.tools' DIR='/var/www/nix.tools':
 
 and running e.g. `just deploy` or `just deploy nix.tools /var/www/nix.tools`.
 
-Deploying a static website like this is enough for a lot of people.
+Deploying a static website like this is enough for a lot of people, but a later article will expand on deploying with flakes.
 
 ## Step 5: Setting up a website with Nginx and Let’s Encrypt
 
@@ -274,12 +274,16 @@ Assuming your webserver runs NixOS, here is a configuration for setting up a dom
 
 [nixos-anywhere]: https://github.com/nix-community/nixos-anywhere
 
+A small gotcha: You have to deploy the website once without TLS:
+
+Let's Encrypt's `certbot` will deploy a challenge to the unencrypted website, which requires the unencrypted website to be around for that to happen.
+
 ```nix
 { ... }:
 {
   security.acme = {
     acceptTerms = true;
-    defaults.email = "simon@simonshine.dk";
+    defaults.email = "john.doe@example.org";
   };
 
   services.nginx = {
@@ -290,8 +294,8 @@ Assuming your webserver runs NixOS, here is a configuration for setting up a dom
     recommendedTlsSettings = true;
 
     virtualHosts."nix.tools" = {
-      forceSSL = true;
-      enableACME = true;
+      # forceSSL = true;   # deploy without this first
+      # enableACME = true; # deploy without this first
       root = "/var/www/nix.tools/public";
     };
   };
