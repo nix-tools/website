@@ -1,0 +1,12 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-US'
+title = 'My New Hugo Site'
+
+[markup]
+[markup.highlight]
+style = "github"
+
+[module]
+[module.hugoVersion]
+extended = false
+min = "0.116.0"

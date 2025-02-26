@@ -1,0 +1,15 @@
+{{ define "main" }}
+<div class="infobox">
+    {{ .Content }}
+</div>
+<div class="infobox">
+    <h2>Most recent articles</h2>
+    <ul class="recent-articles">
+        {{ range first 5 .Site.RegularPages }}
+        <li>
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a> ({{ .Date.Format "2006-01-02" }})
+        </li>
+        {{ end }}
+    </ul>
+</div>
+{{ end }}

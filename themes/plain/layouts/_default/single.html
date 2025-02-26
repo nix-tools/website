@@ -1,0 +1,9 @@
+{{ define "main" }}
+<h1>{{ .Title }}</h1>
+
+{{ $date := .Date | time.Format "2006-01-02" }}
+Published <time datetime="{{ $date }}">{{ $date }}</time>, contains {{ .WordCount }} words
+
+{{ .Content }}
+{{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+{{ end }}

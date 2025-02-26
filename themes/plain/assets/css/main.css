@@ -1,0 +1,129 @@
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+
+  color: #222;
+  font-family: 'Droid Sans Mono', sans-serif;
+  line-height: 1.5;
+}
+
+header {
+  margin: 0;
+  padding: 0;
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header nav {
+  padding: 0 1rem;
+
+  background: #f2f2f2;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+header nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+header nav ul li {
+  margin-right: 1rem;
+}
+
+header nav ul li:last-child {
+  margin-right: 0;
+}
+
+header h1 {
+  margin: 0;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+header h1 img {
+  height: 4rem;
+  max-height: 100%;
+  min-height: 100%;
+  width: auto;
+  margin-right: 1rem;
+}
+
+main {
+  margin: 1rem;
+  flex: 1;
+}
+
+footer {
+  margin-top: auto;
+  padding: 1rem;
+  background: #f2f2f2;
+  border-top: 1px solid #d4d4d4;
+}
+
+a {
+  color: #7EBAE4;
+}
+
+a:visited {
+  color: #5277C3;
+}
+
+/* Nix blues: #7EBAE4; #5277C3; */
+.highlight pre,
+pre {
+  background: #eee !important;
+  padding: 0.5rem;
+  overflow-x: auto;
+}
+
+@media screen and (min-width: 1200px) {
+  main {
+    width: 70%;
+  }
+}
+
+.infobox {
+  margin: 1rem 0;
+  border: 1px solid #d4d4d4;
+  display: inline-block;
+  width: 45%;
+  vertical-align: top;
+}
+
+.infobox h2,
+.infobox h3 {
+  margin: 0;
+  padding: 0 0.5rem;
+}
+
+.infobox h2 {
+  background: #eee;
+}
+
+.infobox p,
+.infobox li {
+  padding: 0 0.5rem;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: normal;
+}
+
+pre,
+code {
+  font-family: 'Droid Mono', 'Courier New', Courier, monospace;
+  font-size: 1.1em;
+  line-height: inherit;
+}

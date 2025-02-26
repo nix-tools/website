@@ -1,5 +1,7 @@
 # Hugo output
 public/
+public.tgz
 
 # Misc.
+.hugo_build.lock
 .direnv/
