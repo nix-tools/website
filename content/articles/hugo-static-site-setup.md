@@ -254,6 +254,7 @@ $ ssh server 'cd /var/www/website && tar xfz public.tgz'
 This can be summarized as a justfile action:
 
 ```justfile
+# Deploy to DIR on SERVER using tar/ssh/scp
 deploy SERVER='nix.tools' DIR='/var/www/nix.tools':
     hugo
     tar cfz public.tgz public/
