@@ -301,3 +301,17 @@ Let's Encrypt's `certbot` will deploy a challenge to the unencrypted website, wh
   };
 }
 ```
+
+It makes sense to add this as part of your webserver's Nix configuration.
+
+Finally, a `.gitignore` appropriate for this project:
+
+```
+# Hugo output
+public/
+public.tgz
+
+# Misc.
+.hugo_build.lock
+.direnv/
+```
