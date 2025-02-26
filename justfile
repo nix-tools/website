@@ -15,6 +15,7 @@ post MDFILE:
     mkdir -p content/articles
     hugo new content 'content/articles/{{ MDFILE }}' || true
 
+# Deploy to DIR on SERVER using tar/ssh/scp
 deploy SERVER='feng' DIR='/var/www/nix.tools':
     hugo
     tar cfz public.tgz public/
