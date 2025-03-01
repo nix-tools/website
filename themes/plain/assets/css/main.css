@@ -90,14 +90,19 @@ pre {
   main {
     width: 70%;
   }
+
+  .infobox {
+    display: inline-block;
+    width: 45%;
+    vertical-align: top;
+  }
+
+
 }
 
 .infobox {
   margin: 1rem 0;
   border: 1px solid #d4d4d4;
-  display: inline-block;
-  width: 45%;
-  vertical-align: top;
 }
 
 .infobox h2,
