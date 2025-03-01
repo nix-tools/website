@@ -11,8 +11,12 @@ See the tutorial code at https://github.com/nix-tools/nix-hugo
 This tutorial…
 
 - Provides a development environment for running interactively
-- Provides a derivation for deployment on NixOS
-- Deploys to a webserver using `just`, `ssh` and `scp`
+- Provides a [derivation][nix-derivation] for deployment on NixOS
+- Deploys to a webserver using [`just`][just], `ssh` and `scp`
+- Deploys to a webserver using a flake
+
+[nix-derivation]: https://nix.dev/manual/nix/2.17/language/derivations
+[just]: https://github.com/casey/just
 
 ## Step 0: Prerequisites
 
@@ -83,10 +87,9 @@ We look among [Hugo themes][hugo-themes] and settle for [hugo-theme-m10c][hugo-t
 
 [hugo-themes]: https://themes.gohugo.io/
 [hugo-theme-m10c]: https://github.com/vaga/hugo-theme-m10c
+[hugo-theme-m10c-config]: https://github.com/vaga/hugo-theme-m10c#configuration
 
-Instead of git cloning or downloading the theme and adding it to this repository, we create a [derivation][nix-derivation] called `hugo-theme` in shell.nix:
-
-[nix-derivation]: https://nix.dev/manual/nix/2.17/language/derivations
+Instead of git cloning or downloading the theme and adding it to this repository, we create a derivation called `hugo-theme` in shell.nix:
 
 ```nix
 let
@@ -155,7 +158,6 @@ $ hugo new content content/posts/hello-world.md
 
 I like to collect commands in an executable cheatsheet called a [`justfile`][just]:
 
-[just]: https://github.com/casey/just
 
 ```justfile
 # See available `just` subcommands
@@ -260,3 +262,65 @@ result
 # Theme is vendored via Nix, don't commit
 themes/default
 ```
+
+At this point, you can...
+
+- Create content using `just post hello-world.md`
+- [Explore the m10c theme's configuration][hugo-theme-m10c-config]
+- Upload the website to your webserver using `just deploy`
+
+This setup is fully functional for blogging.
+
+## Step 6: Create a deployable derivation with HTML inside
+
+The following section is for when you want the website to be deployable as part of a NixOS configuration.
+
+I.e. the HTML files in your public directory are not just loosely copied around, but are deployed as part of the system's configuration.
+
+This is not better in all ways. For example, you may prefer the freedom of `just deploy`.
+
+But deploying using a derivation does provide for more automation.
+
+In a file called default.nix, provide the following:
+
+```nix
+let
+  nixpkgs = builtins.fetchTarball "https://github.com/nixos/nixpkgs/archive/nixos-unstable.tar.gz";
+  hugo-theme = builtins.fetchTarball {
+    name = "hugo-theme-m10c";
+    url = "https://github.com/vaga/hugo-theme-m10c/archive/8295ee808a8166a7302b781895f018d9cba20157.tar.gz";
+    sha256 = "12jvbikznzqjj9vjd1hiisb5lhw4hra6f0gkq1q84s0yq7axjgaw";
+  };
+in
+  {pkgs ? import nixpkgs {}}:
+    pkgs.stdenv.mkDerivation {
+      name = "my-hugo-site";
+
+      # Source directory containing your Hugo project
+      src = ./.;
+
+      # Build dependencies
+      nativeBuildInputs = [pkgs.hugo];
+
+      # Copy in theme before building website
+      preBuildPhase = ''
+        mkdir -p themes/default
+        cp -r ${hugo-theme}/* themes/default/
+      '';
+
+      # Build phase - run Hugo to generate the site
+      buildPhase = ''
+        hugo
+      '';
+
+      # Install phase - copy the public directory to the output
+      installPhase = ''
+        mkdir -p $out
+        cp -r public/* $out/
+      '';
+    }
+```
+
+When typing `nix-build`, the website is generated in the nix-store and symlinked to result/.
+
+You may want to add result/ to .gitignore.
