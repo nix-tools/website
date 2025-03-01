@@ -6,15 +6,15 @@ draft = false
 
 ## Welcome
 
-nix.tools is an unofficial Nix documentation site and contains guides for beginners and intermediate users on how to enhance their Nix experience. Browse this site for interesting learning material and references elsewhere. [Read more »](/about)
-
-Learning Nix requires doing research. Some of the resources you will find when searching the web. Others are in the category "I wish I knew 6 months ago!" These are listed here:
+nix.tools is an unofficial Nix documentation site and contains guides for beginners and intermediate users on specific topics. [Read more »](/about)
 
 ### Getting started?
 
+Learning Nix requires doing research. Some resources you will find when searching the web. Others are in the category "I wish I knew 6 months ago!" These are listed here:
+
 For your day-to-day learning,
 
-- [Nix in 100 seconds][nix-100s]: The answer to "But why?" from your friends and colleagues.
+- [Nix in 100 seconds][nix-100s]: When your friends ask "But why?"
 - [nix.dev][nix.dev]: The official documentation site for Nix is the best place to start reading. It teaches basics and advanced subjects.
 - [Get in Touch][get-in-touch]: Find a chatroom early in your journey. Discord, IRC, Matrix, Reddit, Signal, Telegram.
 - [Awesome Nix][awesome-nix]: An unordered collection of learning materials.
