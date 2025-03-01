@@ -22,19 +22,14 @@ This tutorial…
 
 ## Step 1: A development environment
 
-A dev shell is provided in two ways: as a shell.nix and as a flake.nix, pick one.
-
-### shell.nix
-
-A shell.nix is sufficient for providing a dev shell.
+A dev shell is provided as a file called shell.nix:
 
 ```nix
 let
-  nixpkgs = builtins.fetchTarball
-    "https://github.com/nixos/nixpkgs/archive/nixos-unstable.tar.gz";
+  nixpkgs = builtins.fetchTarball "https://github.com/nixos/nixpkgs/archive/nixos-unstable.tar.gz";
   pkgs = import nixpkgs {};
 in
-  pkgs.makeShellNoCC {
+  pkgs.mkShellNoCC {
     packages = [
       pkgs.hugo
       pkgs.just
@@ -42,60 +37,18 @@ in
   }
 ```
 
-### flake.nix
+You can enter the development environment by typing `nix-shell` in the directory.
 
-A flake has other options for deploying the static website later.
+This will make the commands `just` and `hugo` available.
 
-```nix
-{
-  description = "Hugo Website";
-
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-  };
-
-  outputs = {nixpkgs, ...}: let
-    system = "x86_64-linux";
-    pkgs = nixpkgs { inherit system; };
-  in {
-    devShells.${system}.default = pkgs.mkShellNoCC {
-      packages = [
-        pkgs.hugo
-        pkgs.just
-      ];
-    };
-  };
-}
-```
-
-Some deliberate limitations:
-
-- Only an environment for `x86_64-linux` is provided
-- You can change this to `aarch64-darwin` for MacOS
-- Only `hugo` and `just` are added to the environment
-
-At this point, the flake only exports a single devShells entry:
+But you can also enable direnv for the custom shell to automatically load as you enter the directory:
 
 ```sh
-$ nix flake show
-git+file:///home/sshine/Projects/website
-└───devShells
-    └───x86_64-linux
-        └───default: development environment 'nix-shell'
-```
-
-You can enter the development environment by typing `nix develop`.
-
-Enabling direnv with flakes makes the dev environment available as an overlay in your existing shell:
-
-```sh
-$ echo 'use flake' > .envrc
+$ echo 'use nix' > .envrc
 $ direnv allow
 $ hugo version
 hugo v0.143.1+extended+withdeploy linux/amd64 BuildDate=unknown VendorInfo=nixpkgs
 ```
-
-You can also enable direnv for a shell.nix by `echo 'use nix' > .envrc` instead.
 
 This installs the Hugo CLI, but there is no website yet.
 
@@ -129,45 +82,36 @@ Commit these files to git for now.
 
 ## Step 3: Adding a theme
 
-We look among [Hugo themes][hugo-themes] and settle for [hugo-theme-m10c][hugo-theme-m10c].
+We look among [Hugo themes][hugo-themes] and settle for [hugo-theme-m10c][hugo-theme-m10c], a minimalistic, responsive blogger theme.
 
 [hugo-themes]: https://themes.gohugo.io/
 [hugo-theme-m10c]: https://github.com/vaga/hugo-theme-m10c
 
-Instead of git cloning or downloading the theme and adding it to this repository, we create a [derivation][nix-derivation] in flake.nix:
+Instead of git cloning or downloading the theme and adding it to this repository, we create a [derivation][nix-derivation] called `hugo-theme` in shell.nix:
 
 [nix-derivation]: https://nix.dev/manual/nix/2.17/language/derivations
 
 ```nix
-{
-  description = "Hugo Website";
-
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+let
+  nixpkgs = builtins.fetchTarball "https://github.com/nixos/nixpkgs/archive/nixos-unstable.tar.gz";
+  pkgs = import nixpkgs {};
+  hugo-theme = builtins.fetchTarball {
+    name = "hugo-theme-m10c";
+    url = "https://github.com/vaga/hugo-theme-m10c/archive/8295ee808a8166a7302b781895f018d9cba20157.tar.gz";
+    sha256 = "12jvbikznzqjj9vjd1hiisb5lhw4hra6f0gkq1q84s0yq7axjgaw";
   };
+in
+  pkgs.mkShellNoCC {
+    packages = [
+      pkgs.hugo
+      pkgs.just
+    ];
 
-  outputs = {nixpkgs, ...}: let
-    system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
-    hugo-theme = builtins.fetchTarball {
-      name = "hugo-theme-m10c";
-      url = "https://github.com/vaga/hugo-theme-m10c/archive/8295ee808a8166a7302b781895f018d9cba20157.tar.gz";
-      sha256 = "12jvbikznzqjj9vjd1hiisb5lhw4hra6f0gkq1q84s0yq7axjgaw";
-    };
-  in {
-    devShells.${system}.default = pkgs.mkShellNoCC {
-      packages = [
-        pkgs.hugo
-        pkgs.just
-      ];
-
-      shellHook = ''
-        mkdir -p themes
-        ln -snf "${hugo-theme}" themes/default
-      '';
-    };
-  };
-}
+    shellHook = ''
+      mkdir -p themes
+      ln -snf "${hugo-theme}" themes/default
+    '';
+  }
 ```
 
 Here, `hugo-theme` is bound to the derivation made by `builtins.fetchTarball {...}`.
@@ -203,7 +147,7 @@ title = 'nix.tools'
 theme = 'default'
 ```
 
-The theme is never added to version control. It is cached and symlinked from the Nix store. The main advantage is that we don't need to deal more with the theme, it's there. The disadvantage is that modifying the theme is difficult. This does not address vendoring the theme to prevent build failure in case the theme repository is deleted on GitHub. It also does not address extending the theme locally.
+For now, the theme's files are not added to version control. It is fetched, cached and symlinked from the Nix store. And then it is configured through hugo.toml. The main advantage is that we don't need to deal more with the theme, it's there. The disadvantage is that modifying the theme is out of scope. This does not address vendoring the theme to prevent build failure in case the theme repository is deleted on GitHub, or extending the theme locally.
 
 At this point there are two commands that are good to know for creating content:
 
@@ -212,7 +156,7 @@ $ hugo serve -D  # aka --buildDrafts
 $ hugo new content content/posts/hello-world.md
 ```
 
-I like to collect commands in an executable cheatsheet called [`justfile`][just]:
+I like to collect commands in an executable cheatsheet called a [`justfile`][just]:
 
 [just]: https://github.com/casey/just
 
