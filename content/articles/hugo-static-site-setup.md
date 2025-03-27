@@ -25,10 +25,7 @@ This tutorial…
 A dev shell is provided as a file called shell.nix:
 
 ```nix
-let
-  nixpkgs = builtins.fetchTarball "https://github.com/nixos/nixpkgs/archive/nixos-unstable.tar.gz";
-  pkgs = import nixpkgs {};
-in
+{ pkgs ? import <nixpkgs> {} }:
   pkgs.mkShellNoCC {
     packages = [
       pkgs.hugo
