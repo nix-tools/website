@@ -258,7 +258,8 @@ public.tgz
 # Misc.
 .hugo_build.lock
 .direnv/
+result
 
 # Theme is vendored via Nix, don't commit
-theme/default
+themes/default
 ```
