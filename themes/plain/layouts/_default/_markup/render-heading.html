@@ -1,0 +1,7 @@
+<h{{ .Level }} id="{{ .Anchor | safeURL }}">
+  {{ .Text | safeHTML }}
+  <a href="#{{ .Anchor | safeURL }}" class="header-anchor">
+    <span class="anchor-link"><img src="/img/nix.svg"></span>
+  </a>
+</h{{ .Level }}>
+
